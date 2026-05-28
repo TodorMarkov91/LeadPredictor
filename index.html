@@ -71,6 +71,49 @@
             margin-bottom: 6px;
         }
 
+        .form-group select,
+        .form-group input[type="date"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 9px 12px;
+            background: #243044;
+            border: 1px solid #2d3f55;
+            color: #e0e6f0;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            border-color: #4a90e2;
+        }
+
+        .input-prefix {
+            display: flex;
+            align-items: center;
+            background: #243044;
+            border: 1px solid #2d3f55;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .input-prefix span {
+            padding: 9px 10px;
+            background: #1e2a3a;
+            color: #8b9bb4;
+            border-right: 1px solid #2d3f55;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .input-prefix input {
+            border: none !important;
+            border-radius: 0 !important;
+            flex: 1;
+            background: transparent;
+        }
+
         .main {
             flex: 1;
             padding: 24px;
@@ -134,21 +177,48 @@
         <aside class="sidebar">
             <div class="form-group">
                 <label>Language</label>
+                <select id="language">
+                    <option value="en">&#127482;&#127480; English</option>
+                    <option value="bg">&#127463;&#127468; Bulgarian</option>
+                    <option value="de">&#127465;&#127466; German</option>
+                    <option value="fr">&#127467;&#127479; French</option>
+                </select>
             </div>
+
             <div class="form-group">
                 <label>Currency</label>
+                <select id="currency">
+                    <option value="USD">$ US Dollar</option>
+                    <option value="EUR">&#8364; Euro</option>
+                    <option value="BGN">&#1083;&#1074; Bulgarian Lev</option>
+                    <option value="GBP">&#163; British Pound</option>
+                </select>
             </div>
+
             <div class="form-group">
                 <label>Campaign Start</label>
+                <input type="date" id="campaignStart" value="2026-05-08">
             </div>
+
             <div class="form-group">
                 <label>Campaign End</label>
+                <input type="date" id="campaignEnd" value="2026-11-04">
             </div>
+
             <div class="form-group">
                 <label>Total Revenue</label>
+                <div class="input-prefix">
+                    <span id="currencySymbol">$</span>
+                    <input type="number" id="totalRevenue" value="10000" min="0">
+                </div>
             </div>
+
             <div class="form-group">
                 <label>Avg. Order Value</label>
+                <div class="input-prefix">
+                    <span id="currencySymbol2">$</span>
+                    <input type="number" id="avgOrderValue" value="1000" min="1">
+                </div>
             </div>
         </aside>
 
@@ -173,6 +243,15 @@
         </main>
 
     </div>
+
+    <script>
+        document.getElementById('currency').addEventListener('change', function () {
+            const symbols = { USD: '$', EUR: '€', BGN: 'лв', GBP: '£' };
+            const sym = symbols[this.value] || '$';
+            document.getElementById('currencySymbol').textContent = sym;
+            document.getElementById('currencySymbol2').textContent = sym;
+        });
+    </script>
 
 </body>
 </html>
