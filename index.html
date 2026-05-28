@@ -44,10 +44,6 @@
             color: #e0e6f0;
         }
 
-        .logo strong {
-            color: #e0e6f0;
-        }
-
         .container {
             display: flex;
             flex: 1;
@@ -136,17 +132,58 @@
             min-height: 300px;
         }
 
+        /* Sliders */
         .sliders-section {
             background: #1e2a3a;
             border-radius: 10px;
             padding: 20px;
+        }
+
+        .slider-group {
+            margin-bottom: 20px;
+        }
+
+        .slider-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .slider-label {
+            color: #e0e6f0;
+            font-size: 14px;
+        }
+
+        .slider-value {
             color: #8b9bb4;
+            font-size: 14px;
         }
 
-        .sliders-section p {
-            margin-bottom: 12px;
+        input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 4px;
+            background: #2d3f55;
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
         }
 
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #e0e6f0;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #4a90e2;
+        }
+
+        /* Cards */
         .cards-section {
             width: 220px;
             display: flex;
@@ -158,9 +195,51 @@
             background: #243044;
             border-radius: 10px;
             padding: 16px 18px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             color: #8b9bb4;
             font-size: 14px;
         }
+
+        .card-pct {
+            color: #8b9bb4;
+            font-size: 13px;
+        }
+
+        .card-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .card-bar-bg {
+            height: 6px;
+            background: #1e2a3a;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .card-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+
+        .card-prospects .card-bar-fill { background: #607d9e; width: 100%; }
+        .card-leads .card-bar-fill     { background: #4a90e2; width: 20%; }
+        .card-customers .card-bar-fill { background: #5aaa7a; width: 8%; }
     </style>
 </head>
 <body>
@@ -228,16 +307,67 @@
                 <div class="chart-wrapper">
                     <div id="chart">Chart placeholder</div>
                 </div>
+
                 <div class="sliders-section">
-                    <p>Lead Response Rate</p>
-                    <p>Prospect Response Rate</p>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label">Lead Response Rate</span>
+                            <span class="slider-value" id="leadRateVal">40.00%</span>
+                        </div>
+                        <input type="range" id="leadRate" min="1" max="100" value="40" step="0.1">
+                    </div>
+                    <div class="slider-group">
+                        <div class="slider-header">
+                            <span class="slider-label">Prospect Response Rate</span>
+                            <span class="slider-value" id="prospectRateVal">20.00%</span>
+                        </div>
+                        <input type="range" id="prospectRate" min="1" max="100" value="20" step="0.1">
+                    </div>
                 </div>
             </div>
 
             <div class="cards-section">
-                <div class="card">Prospects</div>
-                <div class="card">Leads</div>
-                <div class="card">Customers</div>
+                <div class="card card-prospects">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span>&#128193;</span>
+                            <span>Prospects</span>
+                        </div>
+                        <span class="card-pct">100%</span>
+                    </div>
+                    <div class="card-value" id="prospectsVal">125</div>
+                    <div class="card-bar-bg">
+                        <div class="card-bar-fill" id="prospectsBar"></div>
+                    </div>
+                </div>
+
+                <div class="card card-leads">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span>&#128100;</span>
+                            <span>Leads</span>
+                        </div>
+                        <span class="card-pct" id="leadsPct">20%</span>
+                    </div>
+                    <div class="card-value" id="leadsVal">25</div>
+                    <div class="card-bar-bg">
+                        <div class="card-bar-fill" id="leadsBar"></div>
+                    </div>
+                </div>
+
+                <div class="card card-customers">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span>&#127942;</span>
+                            <span>Customers</span>
+                        </div>
+                        <span class="card-pct" id="customersPct">8%</span>
+                    </div>
+                    <div class="card-value" id="customersVal">10</div>
+                    <div class="card-bar-bg">
+                        <div class="card-bar-fill" id="customersBar"></div>
+                    </div>
+                </div>
             </div>
 
         </main>
@@ -245,12 +375,52 @@
     </div>
 
     <script>
-        document.getElementById('currency').addEventListener('change', function () {
+        function calculate() {
+            const revenue  = parseFloat(document.getElementById('totalRevenue').value)  || 0;
+            const avgOrder = parseFloat(document.getElementById('avgOrderValue').value) || 1;
+            const leadRate     = parseFloat(document.getElementById('leadRate').value)     / 100;
+            const prospectRate = parseFloat(document.getElementById('prospectRate').value) / 100;
+
+            const customers = Math.round(revenue / avgOrder);
+            const leads     = Math.round(customers / leadRate);
+            const prospects = Math.round(leads / prospectRate);
+
+            return { customers, leads, prospects };
+        }
+
+        function update() {
+            const { customers, leads, prospects } = calculate();
+
+            document.getElementById('prospectsVal').textContent = prospects;
+            document.getElementById('leadsVal').textContent     = leads;
+            document.getElementById('customersVal').textContent = customers;
+
+            const leadsPct     = prospects > 0 ? Math.round(leads     / prospects * 100) : 0;
+            const customersPct = prospects > 0 ? Math.round(customers / prospects * 100) : 0;
+
+            document.getElementById('leadsPct').textContent     = leadsPct + '%';
+            document.getElementById('customersPct').textContent = customersPct + '%';
+            document.getElementById('leadsBar').style.width     = leadsPct + '%';
+            document.getElementById('customersBar').style.width = Math.min(customersPct, 100) + '%';
+
+            document.getElementById('leadRateVal').textContent =
+                parseFloat(document.getElementById('leadRate').value).toFixed(2) + '%';
+            document.getElementById('prospectRateVal').textContent =
+                parseFloat(document.getElementById('prospectRate').value).toFixed(2) + '%';
+
             const symbols = { USD: '$', EUR: '€', BGN: 'лв', GBP: '£' };
-            const sym = symbols[this.value] || '$';
-            document.getElementById('currencySymbol').textContent = sym;
+            const sym = symbols[document.getElementById('currency').value] || '$';
+            document.getElementById('currencySymbol').textContent  = sym;
             document.getElementById('currencySymbol2').textContent = sym;
+        }
+
+        ['totalRevenue', 'avgOrderValue', 'campaignStart', 'campaignEnd', 'currency', 'language',
+         'leadRate', 'prospectRate'].forEach(id => {
+            document.getElementById(id).addEventListener('input',  update);
+            document.getElementById(id).addEventListener('change', update);
         });
+
+        update();
     </script>
 
 </body>
