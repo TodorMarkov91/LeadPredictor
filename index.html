@@ -4,6 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LeadPredictor</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #1a2332;
+            color: #e0e6f0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #1e2a3a;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #2d3f55;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo-icon {
+            background: #3a5070;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #e0e6f0;
+        }
+
+        .logo strong {
+            color: #e0e6f0;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: #1e2a3a;
+            padding: 24px 20px;
+            border-right: 1px solid #2d3f55;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #8b9bb4;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .main {
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            gap: 24px;
+        }
+
+        .chart-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .chart-wrapper {
+            background: #1e2a3a;
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            min-height: 300px;
+        }
+
+        .sliders-section {
+            background: #1e2a3a;
+            border-radius: 10px;
+            padding: 20px;
+            color: #8b9bb4;
+        }
+
+        .sliders-section p {
+            margin-bottom: 12px;
+        }
+
+        .cards-section {
+            width: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card {
+            background: #243044;
+            border-radius: 10px;
+            padding: 16px 18px;
+            color: #8b9bb4;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
 
